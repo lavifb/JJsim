@@ -1,4 +1,4 @@
 JJsim
 =====
 
-Simulation of Josephson Junctions
+Package for simulation of Josephson Junctions
