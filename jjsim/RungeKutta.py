@@ -90,7 +90,7 @@ def rk4_3(x, y, z, fx, fy, fz, dt, t = 0):
         xyz = [xf, yf, zf]
         return xyz
 
-def RK4(xs, fxs, dt, t=0):
+def RK4(xs, fxs, dt, t = 0):
         """ Returns final xs tuple after time dt has passed.
 
         xs: initial conditions (tuple)
@@ -133,7 +133,7 @@ def RK4(xs, fxs, dt, t=0):
 
         return xf
 
-def rk4_1st(t, x, f, dt):
+def rk4_1(t, x, f, dt):
         """ Returns final position after time dt has passed.
 
         t: time (number)

@@ -34,8 +34,8 @@ class JJ:
             T: duration of counting
 
             sets the phase to the most recent phase
-            sets voltage to average over last fifth of T
-            returns the average voltage."""
+            sets voltage to average over last three fifths 
+            of T returns the average voltage."""
         v = self.volt
         t = 0
         sumv = 0.0
@@ -44,7 +44,7 @@ class JJ:
             pv = RK.rk4_2(self.phase, v, self.getA(i), self.dt)
             self.setP(pv[0])
             v = pv[1]
-            if t > 4*T/5:
+            if t > 2*T/5:
                 sumv+=v
                 vtot+=1
             t += 1
@@ -176,8 +176,8 @@ class JJFreq(JJ):
             T: duration of counting
 
             sets the phase to the most recent phase
-            sets voltage to average over last fifth of T
-            returns the average voltage."""
+            sets voltage to average over last three fifths 
+            of T returns the average voltage."""
         v = self.volt
         vc = self.v_c
         t = 0
@@ -188,7 +188,7 @@ class JJFreq(JJ):
             self.setP(pvv[0])
             v = pvv[1]
             vc = pvv[2]
-            if t > 4*T/5:
+            if t > 2*T/5:
                 sumv+=v
                 vtot+=1
             t += 1
