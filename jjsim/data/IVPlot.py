@@ -3,28 +3,6 @@ import JJs
 import FileSetup as FS
 import time, datetime
 
-def IVPlotDat(j, T, di = .01, i0 = 0, imax=1.5, reps = 10, fl='test.dat'):
-    """ IV Curve function for just one junction"""
-    dir = os.path.dirname(fl)
-    if not os.path.exists(dir):
-        os.makedirs(dir)
-    f = open(fl, 'w')
-    f.write('# IV simulation data file\n')
-    f.write('# This is a junction with b = {0} and sig = {1}\n'.format(j.b, j.sig))
-    f.write('# The simulation is run with dt = {0} and T = {1} for {2} trials\n'.format(dt, T, reps))
-    f.write('# i         v\n')
-    r = 0
-    while r<reps:
-        print('starting {0} of {1}'.format(r+1, reps))
-        i = i0
-        while (i < imax):
-            f.write('{0:.3f}  {1:+.8f}\n'.format(i, j.applyI(i, T)))
-            #print('{0:.3f} {1:+.8f}'.format(i, vs[len(vs)-1]))
-            i += di
-        r+=1
-    f.close()
-    print('done  {0}'.format(fl))
-
 def IVPlotsDat(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     """ Produces data file with an IV curve that is averaged over the junctions
         along with the data from the actual junctions"""
@@ -37,8 +15,9 @@ def IVPlotsDat(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f.write('# i       AveVolt         v1 ...\n')
     r = 0
     i = i0
+    out = ''
     while (i < imax):
-        f.write('{0:.3f}'.format(i))
+        out += '{0:.3f}'.format(i)
         vs = []
         sumv = 0.0
         vtot = 0
@@ -47,15 +26,16 @@ def IVPlotsDat(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
             vs.append(v)
             sumv += v
             vtot += 1
-        f.write('  {0:+.8f}'.format(sumv/vtot))
+        out += '  {0:+.8f}'.format(sumv/vtot)
         for v_ in vs:
-            f.write('  {0:+.8f}'.format(v_))
-        f.write('\n')
+            out += '  {0:+.8f}'.format(v_)
+        out += '\n'
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i += di
     f.write('# Runtime: {0} seconds'.format(time.time() - start_time))
+    f.write(out)
     f.close()
-    print('done  {0}'.format(fl))
+    print('done with {0}'.format(fl))
 
 def hystDat(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     """ Produces data file with an hysteric IV curve that is averaged over the junctions
@@ -207,7 +187,7 @@ def phasePorts(js, i=.01, T=1000, fl='test.dat'):
                 f.write('{0:.8f} {1:.8f} \n'.format(pv[0], pv[1]))
             if pv[0] > 50:
                 break
-            t+=dt
+            t+=j.dt
         count += 1
         f.write('\n')
     f.close()
@@ -232,7 +212,7 @@ def phasePort(j, i=.01, T=1000, fl='test.dat'):
         f.write('{0:.8f} {1:.8f} \n'.format(pv[0], pv[1]))
         if pv[0] > 50:
             break
-        t+=dt
+        t+=j.dt
     print('junction done'.format(count))
     count += 1
     f.close()
