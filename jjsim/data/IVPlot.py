@@ -23,7 +23,7 @@ def IVPlot(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f.write('Type of Junctions:  {0} \n'.format(js[0].getType()))
     f.write('Junctions Info:     {0} \n'.format(js[0].getInfo()))
     f.write('dt, T:              {0}, {1} \n'.format(js[0].dt, T))
-    f.write('di, irange:         {0}, {1}-{2} \n'.format(di, i0, imax))
+    f.write('current range, di:  {1}-{2}, {0} \n'.format(di, i0, imax))
     f.write('Date:               {0}/{1}/{2} \n'.format(nw.month, nw.day, nw.year))
     f.write('Time:               {0}:{1} \n'.format(nw.hour, nw.minute))
 
@@ -65,7 +65,7 @@ def hyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f.write('Type of Junctions:  {0} \n'.format(js[0].getType()))
     f.write('Junctions Info:     {0} \n'.format(js[0].getInfo()))
     f.write('dt, T:              {0}, {1} \n'.format(js[0].dt, T))
-    f.write('di, irange:         {0}, {1}-{2} \n'.format(di, i0, imax))
+    f.write('current range, di:  {1}-{2}, {0} \n'.format(di, i0, imax))
     f.write('Date:               {0}/{1}/{2} \n'.format(nw.month, nw.day, nw.year))
     f.write('Time:               {0}:{1} \n'.format(nw.hour, nw.minute))
 
@@ -121,7 +121,7 @@ def allIVPlot(js, T = 1000, di = .01, i0 = 0.0, imax=1.5, fl='test.dat'):
     f.write('Type of Junctions:  {0} \n'.format(js[0].getType()))
     f.write('Junctions Info:     {0} \n'.format(js[0].getInfo()))
     f.write('dt, T:              {0}, {1} \n'.format(js[0].dt, T))
-    f.write('di, irange:         {0}, {1}-{2} \n'.format(di, i0, imax))
+    f.write('current range, di:  {1}-{2}, {0} \n'.format(di, i0, imax))
     f.write('Date:               {0}/{1}/{2} \n'.format(nw.month, nw.day, nw.year))
     f.write('Time:               {0}:{1} \n'.format(nw.hour, nw.minute))
 
@@ -169,7 +169,7 @@ def allHyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f.write('Type of Junctions:  {0} \n'.format(js[0].getType()))
     f.write('Junctions Info:     {0} \n'.format(js[0].getInfo()))
     f.write('dt, T:              {0}, {1} \n'.format(js[0].dt, T))
-    f.write('di, irange:         {0}, {1}-{2} \n'.format(di, i0, imax))
+    f.write('current range, di:  {1}-{2}, {0} \n'.format(di, i0, imax))
     f.write('Date:               {0}/{1}/{2} \n'.format(nw.month, nw.day, nw.year))
     f.write('Time:               {0}:{1} \n'.format(nw.hour, nw.minute))
 

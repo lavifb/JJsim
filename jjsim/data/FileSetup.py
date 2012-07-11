@@ -10,6 +10,6 @@ def fileSetup(fl='test.dat'):
     k = 2
     while os.path.exists(fil):
         fil = '{0}_{1}.dat'.format(fl[:-4], k)
-        print(fil)
         k+=1
+    print(fil)
     return fil
