@@ -13,3 +13,4 @@ Current Package structure:
 	- data/  
 		- FileSetup.py  
 		- IVPlot.py  
+		- Phase.py
