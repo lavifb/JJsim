@@ -8,8 +8,8 @@ Package for simulation of Josephson Junctions
 Current Package structure:
 
 jjsim/  
-	JJs.py  
-	RungeKutta.py  
-	data/  
-		FileSetup.py  
-		IVPlot.py  
+&nbsp JJs.py  
+&nbsp RungeKutta.py  
+&nbsp data/  
+&nbsp &nbsp FileSetup.py  
+&nbsp &nbsp IVPlot.py  
