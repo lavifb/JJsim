@@ -40,7 +40,7 @@ def IVPlot(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
         out += '  {0:+.8f} \n'.format(sumv/vtot)
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i += di
-    f.write('Runtime:            {0} \n \n'.format(time.time() - start_time))
+    f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
     f.write(out)
     f.close()
     print('done with {0}'.format(fl))
@@ -95,7 +95,7 @@ def hyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
         out += '  {0:+.8f} \n'.format(sumv/vtot)
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i -= di
-    f.write('Runtime:            {0} \n \n'.format(time.time() - start_time))
+    f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
     f.write(out)
     f.close()
     print('done  {0}'.format(fl))
@@ -143,7 +143,7 @@ def allIVPlot(js, T = 1000, di = .01, i0 = 0.0, imax=1.5, fl='test.dat'):
         out += '\n'
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i += di
-    f.write('Runtime:            {0} \n \n'.format(time.time() - start_time))
+    f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
     f.write(out)
     f.close()
     print('done with {0}'.format(fl))
@@ -209,7 +209,7 @@ def allHyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
         out += '\n'
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i -= di
-    f.write('Runtime:            {0} \n \n'.format(time.time() - start_time))
+    f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
     f.write(out)
     f.close()
     print('done  {0}'.format(fl))

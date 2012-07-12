@@ -38,7 +38,7 @@ def phasePorts(js, i=.01, T=1000, mod = 100000, fl='test.dat'):
                 break
             t+=1
         out += '\n'
-    f.write('Runtime:            {0} \n \n'.format(time.time() - start_time))
+    f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
     f.write(out)
     f.close()
     print('done {0}'.format(fl))
@@ -75,7 +75,7 @@ def phasePort(j, i=.01, T=1000, mod = 100000, fl='test.dat'):
         if pv[0] > 50:
             break
         t+=1
-    f.write('Runtime:            {0} \n \n'.format(time.time() - start_time))
+    f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
     f.write(out)
     f.close()
     print('done {0}'.format(fl))

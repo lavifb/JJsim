@@ -1,4 +1,4 @@
-import math
+import math, numpy
 import RungeKutta as RK
 import random
 
