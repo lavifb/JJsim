@@ -64,3 +64,4 @@ def euler(x0, f, dt, t = 0):
     for i in xrange(len(x0)):
         xf[i] = x0[i] + dt*dx[i]
     return xf
+    

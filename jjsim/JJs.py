@@ -54,6 +54,7 @@ class JJ:
         return self.volt
 
     def dx(self, x, t):
+        """ Returns derivative for diff eq."""
         i_ = self.i
         b_ = self.b
         dp = x[1]
@@ -103,6 +104,7 @@ class JJn(JJ):
         return 'noisy'
 
     def dx(self, x, t):
+        """ Returns derivative for diff eq."""
         i_ = self.i
         b_ = self.b
         i_n = random.gauss(0, self.sig)
@@ -152,6 +154,7 @@ class JJFreq(JJ):
         return 'freq dep'
 
     def dx(self, x, t):
+        """ Returns derivative for diff eq."""
         i_ = self.i
         b_ = self.b
         d_ = self.d
@@ -215,6 +218,7 @@ class JJnFreq(JJFreq, JJn):
         return 'noisy freq dep'
 
     def dx(self, x, t):
+        """ Returns derivative for diff eq."""
         i_ = self.i
         b_ = self.b
         d_ = self.d
