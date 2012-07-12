@@ -1,5 +1,5 @@
-import math, numpy
-import RungeKutta as RK
+import math
+from DiffSolver import euler
 import random
 
 class JJ:
@@ -16,6 +16,7 @@ class JJ:
         self.b = float(b_c)
         # b>1 is underdmaped. b<1 is overdamped
         self.dt = float(dt)
+        self.i = 0
 
     def getInfo(self):
         """ Returns info about junction."""
@@ -36,12 +37,13 @@ class JJ:
             sets the phase to the most recent phase
             sets voltage to average over last three fifths 
             of T returns the average voltage."""
+        self.i = i
         v = self.volt
         t = 0
         sumv = 0.0
         vtot = 0
         while (t*self.dt<T):
-            pv = RK.rk4_2(self.phase, v, self.getA(i), self.dt)
+            pv = euler([self.phase, v], self.dx, self.dt)
             self.setP(pv[0])
             v = pv[1]
             if t > 2*T/5:
@@ -51,12 +53,12 @@ class JJ:
         self.volt = sumv/vtot
         return self.volt
 
-    def getA(self, i):
-        """ Returns the acceleration function to use in RK4."""
+    def dx(self, x, t):
+        i_ = self.i
         b_ = self.b
-        def a(x, v, dt):
-            return (i - v - math.sin(x))/b_
-        return a
+        dp = x[1]
+        dv = (i_ - x[1] - math.sin(x[0]))/b_
+        return [dp, dv]
 
     def setP(self, p):
         """ Sets the phase, taking it mod 2*pi"""
@@ -69,9 +71,10 @@ class JJ:
 
     def getPhaseVolt(self, i = 0.0):
         """ Applies current and returns phase and voltage at point."""
+        self.i = i
         v = self.volt
         t = 0
-        pv = RK.rk4_2(self.phase, v, self.getA(i), self.dt)
+        pv = euler([self.phase, v], self.dx, self.dt)
         self.phase = pv[0]
         self.volt = pv[1]
         return pv
@@ -99,13 +102,13 @@ class JJn(JJ):
         """ Returns type of junction"""
         return 'noisy'
 
-    def getA(self, i):
-        """ Returns the acceleration function to use in RK4."""
+    def dx(self, x, t):
+        i_ = self.i
         b_ = self.b
         i_n = random.gauss(0, self.sig)
-        def a(x, v, dt):
-            return (i + i_n - v - math.sin(x))/b_
-        return a
+        dp = x[1]
+        dv = (i_ + i_n - x[1] - math.sin(x[0]))/b_
+        return [dp, dv]
 
     def setSig(self, s):
         """ Sets the st. dev. for thermal noise current."""
@@ -148,26 +151,15 @@ class JJFreq(JJ):
         """ Returns type of junction."""
         return 'freq dep'
 
-    def getDp(self):
-        """ Returns derivative of phase to use in RK4."""
-        def dp(p, v, vc, t):
-            return v
-        return dp
-
-    def getDv(self, i):
-        """ Returns derivative of voltage to use in RK4."""
+    def dx(self, x, t):
+        i_ = self.i
         b_ = self.b
         d_ = self.d
-        def dv(p, v, vc, t):
-            return (i - v - math.sin(p) - d_*(v-vc))/b_
-        return dv
-
-    def getDvc(self):
-        """ Returns derivative of v_c to use in RK4."""
         e_ = self.e
-        def dvc(p, v, vc, t):
-            return e_*(v - vc)
-        return dvc
+        dp = x[1]
+        dv = (i_ + i_n - x[1] - math.sin(x[0]))/b_
+        dvc = e_*(v - vc)
+        return [dp, dv, dvc]
     
     def applyI(self, i = 0.0, T=1000):
         """ Applies bias current to the junction for duration T.
@@ -184,7 +176,7 @@ class JJFreq(JJ):
         sumv = 0.0
         vtot = 0
         while (t*self.dt<T):
-            pvv = RK.rk4_3(self.phase, v, vc, self.getDp(), self.getDv(i), self.getDvc(), self.dt)
+            pvv = euler([self.phase, v, vc], self.dx, self.dt)
             self.setP(pvv[0])
             v = pvv[1]
             vc = pvv[2]
@@ -222,21 +214,14 @@ class JJnFreq(JJFreq, JJn):
         """ Returns type of junction."""
         return 'noisy freq dep'
 
-    def getDv(self, i):
-        """ Returns derivative of voltage to use in RK4."""
+    def dx(self, x, t):
+        i_ = self.i
         b_ = self.b
         d_ = self.d
+        e_ = self.e
         i_n = random.gauss(0, self.sig)
         i_n1 = random.gauss(0, self.sig * math.sqrt(d_))
-        def dv(p, v, vc, t):
-            return (i + i_n + i_n1 - v - math.sin(p) - d_*(v-vc))/b_
-        return dv
-
-    def getDvc(self):
-        """ Returns derivative of v_c to use in RK4."""
-        d_ = self.d
-        e_ = self.e
-        i_n1 = random.gauss(0, self.sig * math.sqrt(d_))
-        def dvc(p, v, vc, t):
-            return e_*(v - vc - i_n1/d_)
-        return dvc
+        dp = x[1]
+        dv = (i_ + i_n + i_n1 - x[1] - math.sin(x[0]) - d_*(x[1]-x[2]))/b_
+        dvc = e_*(x[1] - x[2] - i_n1/d_)
+        return [dp, dv, dvc]
