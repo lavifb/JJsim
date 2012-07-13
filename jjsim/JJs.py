@@ -38,20 +38,20 @@ class JJ:
             sets voltage to average over last three fifths 
             of T returns the average voltage."""
         self.i = i
+        iT = int(T/self.dt) # renormalized time to integer values
+        p = self.phase
         v = self.volt
-        t = 0
         sumv = 0.0
         vtot = 0
-        while (t*self.dt<T):
-            pv = euler([self.phase, v], self.dx, self.dt)
-            self.setP(pv[0])
-            v = pv[1]
-            if t > 2*T/5:
+        for t in xrange(iT):
+            pv = euler([p, v], self.dx, self.dt)
+            p, v = pv
+            if t > 2*iT/5:
                 sumv+=v
                 vtot+=1
-            t += 1
-        self.volt = sumv/vtot
-        return self.volt
+        self.setP(p)
+        self.volt = v
+        return sumv/vtot
 
     def dx(self, x, t):
         """ Returns derivative for diff eq."""
@@ -124,7 +124,6 @@ class JJn(JJ):
     def setTemp(self, temp):
         """ Sets self.sig to the appropriate value for the temperature."""
         self.sig = math.sqrt((temp + temp)/self.dt)
-        pass
 
 class JJFreq(JJ):
     """ A Josephson Junction with frequency dependent circuit elements."""
@@ -173,23 +172,23 @@ class JJFreq(JJ):
             sets the phase to the most recent phase
             sets voltage to average over last three fifths 
             of T returns the average voltage."""
+        self.i = i
+        iT = int(T/self.dt) # renormalized time to integer values
+        p = self.phase
         v = self.volt
         vc = self.v_c
-        t = 0
         sumv = 0.0
         vtot = 0
-        while (t*self.dt<T):
-            pvv = euler([self.phase, v, vc], self.dx, self.dt)
-            self.setP(pvv[0])
-            v = pvv[1]
-            vc = pvv[2]
-            if t > 2*T/5:
+        for t in xrange(iT):
+            pvv = euler([p, v, vc], self.dx, self.dt)
+            p, v, vc = pvv
+            if t > 2*iT/5:
                 sumv+=v
                 vtot+=1
-            t += 1
-        self.volt = sumv/vtot
+        self.setP(p)
+        self.volt = v
         self.v_c = vc
-        return self.volt
+        return sumv/vtot
 
 class JJnFreq(JJFreq, JJn):
     """ A noisy Josephson Junction with frequency dependent circuit elements."""
