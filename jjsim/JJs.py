@@ -1,6 +1,5 @@
-import math
+import math, random
 from DiffSolver import euler
-import random
 
 class JJ:
     """ A Josephson Junction"""
@@ -73,11 +72,8 @@ class JJ:
     def getPhaseVolt(self, i = 0.0):
         """ Applies current and returns phase and voltage at point."""
         self.i = i
-        v = self.volt
-        t = 0
-        pv = euler([self.phase, v], self.dx, self.dt)
-        self.phase = pv[0]
-        self.volt = pv[1]
+        pv = euler([self.phase, self.volt], self.dx, self.dt)
+        self.phase, self.volt = pv
         return pv
 
 class JJn(JJ):
@@ -127,26 +123,34 @@ class JJn(JJ):
 
 class JJFreq(JJ):
     """ A Josephson Junction with frequency dependent circuit elements."""
-    def __init__(self, b_c = 1.0, p = 0.0, v = 0.0, dt = .01, V_c = 0.0, D = 1.0, E = 1.0):
+    def __init__(self, b_c = 1.0, p = 0.0, v = 0.0, dt = .01, vc = 0.0, Q1 = 1.0, rho = 1.0):
         """ Initiates the junction.
 
             b_c : Stewart-McCumber damping constant
             p: the initial phase difference across the junction
             v: average voltage across the junction
             dt: timestep 
-            V_c: average voltage across the capacitor
-            D: (Q_0/Q_1 - 1) of the configuration
-            E: p/(Q_0^2) = 1/(R*C*R_s*C_s*(w_p)^2) of the configuration """
+            vc: average voltage across the capacitor
+            Q1: quality factor of the frequency dependent branch of the junction
+            rho: quotient of the different junction time constants. """
 
         JJ.__init__(self, b_c, p, v, dt)
-        self.v_c = float(V_c)   # voltage across shunting capacitor
-        self.d = float(D)       # (Q_0/Q_1 -1)
-        self.e = float(E)       # p/(Q_0^2) = 1/(R*C*R_s*C_s*(w_p)^2)
+        self.v_c = float(vc)
+        self.d = math.sqrt(self.b)/Q1 - 1
+        self.e = rho/self.b
 
     def getInfo(self):
         """ Returns info about junction."""
-        out = 'b = {0}, d = {1}, e = {2}'.format(self.b, self.d, self.e)
+        out = 'b = {0}, Q_1 = {1}, rho = {2}'.format(self.b, self.getQ1(), self.getRho())
         return out
+
+    def getQ1(self):
+        """ Returns Q_1, the quality factor of the frequency dependent branch of the junction."""
+        return math.sqrt(self.b)/(self.d + 1)
+
+    def getRho(self):
+        """ Returns (R*C)/(R_s*C_s) the quotient of the different junction time constants."""
+        return self.e*self.b
 
     def getType(self):
         """ Returns type of junction."""
@@ -186,13 +190,19 @@ class JJFreq(JJ):
                 sumv+=v
                 vtot+=1
         self.setP(p)
-        self.volt = v
-        self.v_c = vc
+        self.volt, self.v_c = v, vc
         return sumv/vtot
+
+    def getPhaseVolt(self, i = 0.0):
+        """ Applies current and returns phase and voltage at point."""
+        self.i = i
+        pvv = euler([self.phase, self.volt, self.v_c], self.dx, self.dt)
+        self.phase, self.volt, self.v_c = pvv
+        return pvv[:2]
 
 class JJnFreq(JJFreq, JJn):
     """ A noisy Josephson Junction with frequency dependent circuit elements."""
-    def __init__(self, b_c = 1.0, p = 0.0, v = 0.0, dt = .01, V_c = 0.0, D = 1.0, E = 1.0, temp = 0.0):
+    def __init__(self, b_c = 1.0, p = 0.0, v = 0.0, dt = .01, vc = 0.0, Q1 = 1.0, rho = 1.0, temp = 0.0):
         """ Initiates the junction.
 
             b_c : Stewart-McCumber damping constant
@@ -200,16 +210,16 @@ class JJnFreq(JJFreq, JJn):
             v: average voltage across the junction
             dt: timestep
             V_c: average voltage across the capacitor
-            D: (Q_0/Q_1 - 1) of the configuration
-            E: p/(Q_0^2) = 1/(R*C*R_s*C_s*(w_p)^2) of the configuration
+            Q1: quality factor of the frequency dependent branch of the junction
+            rho: quotient of the different junction time constants
             temp: unit-less temperature """
 
-        JJFreq.__init__(self, b_c, p, v, dt, V_c, D, E)
+        JJFreq.__init__(self, b_c, p, v, dt, vc, Q1, rho)
         self.setTemp(temp, dt)
 
     def getInfo(self, dt = .01):
         """ Returns info about junction."""
-        out = 'b = {0}, temp = {1}, d = {2}, e = {3}'.format(self.b, self.getTemp(dt), self.d, self.e)
+        out = 'b = {0}, temp = {1}, Q_1 = {1}, rho = {2}'.format(self.b, self.getTemp(dt), self.getQ1(), self.getRho())
         return out
 
     def getType(self):
