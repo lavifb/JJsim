@@ -4,7 +4,7 @@ def fileSetup(fl='test.dat'):
     """ Sets up the file. Returns file to be written."""
     dir = os.path.dirname(fl)
     print(dir)
-    if not os.path.exists(dir):
+    if not os.path.exists(dir) and dir != "":
         os.makedirs(dir)
     fil = fl
     k = 2
