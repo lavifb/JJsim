@@ -1,5 +1,5 @@
 import math
-import JJs
+from jjsim import JJs
 import FileSetup as FS
 import time, datetime
 
@@ -28,7 +28,7 @@ def IVPlot(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f.write('Time:               {0}:{1} \n'.format(nw.hour, nw.minute))
 
     i = i0
-    out = 'Current    Voltage \n(i)    (v) \n'
+    out = 'Current    Voltage \n(i)        (v) \n'
     while (i < imax):
         out += '{0:.3f}'.format(i)
         sumv = 0.0
@@ -37,7 +37,7 @@ def IVPlot(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
             v = j.applyI(i, T)
             sumv += v
             vtot += 1
-        out += '  {0:+.8f} \n'.format(sumv/vtot)
+        out += '      {0:+.8f} \n'.format(sumv/vtot)
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i += di
     f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
@@ -70,7 +70,7 @@ def hyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f.write('Time:               {0}:{1} \n'.format(nw.hour, nw.minute))
 
     i = i0
-    out = 'Current    Voltage \n(i)    (v) \n'
+    out = 'Current    Voltage \n(i)        (v) \n'
     while (i < imax):
         out += '{0:.3f}'.format(i)
         sumv = 0.0
@@ -79,7 +79,7 @@ def hyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
             v = j.applyI(i, T)
             sumv += v
             vtot += 1
-        out += '  {0:+.8f} \n'.format(sumv/vtot)
+        out += '      {0:+.8f} \n'.format(sumv/vtot)
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i += di
     i = imax
@@ -92,7 +92,7 @@ def hyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
             v = j.applyI(i, T)
             sumv += v
             vtot += 1
-        out += '  {0:+.8f} \n'.format(sumv/vtot)
+        out += '      {0:+.8f} \n'.format(sumv/vtot)
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i -= di
     f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
@@ -126,7 +126,7 @@ def allIVPlot(js, T = 1000, di = .01, i0 = 0.0, imax=1.5, fl='test.dat'):
     f.write('Time:               {0}:{1} \n'.format(nw.hour, nw.minute))
 
     i = i0
-    out = 'Current    Voltage \n(i)    (v) \n'
+    out = 'Current    Voltage \n(i)        (v) \n'
     while (i < imax):
         out += '{0:.3f}'.format(i)
         vs = []
@@ -137,7 +137,7 @@ def allIVPlot(js, T = 1000, di = .01, i0 = 0.0, imax=1.5, fl='test.dat'):
             vs.append(v)
             sumv += v
             vtot += 1
-        out += '  {0:+.8f}'.format(sumv/vtot)
+        out += '      {0:+.8f}'.format(sumv/vtot)
         for v_ in vs:
             out += '  {0:+.8f}'.format(v_)
         out += '\n'
@@ -174,7 +174,7 @@ def allHyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f.write('Time:               {0}:{1} \n'.format(nw.hour, nw.minute))
 
     i = i0
-    out = 'Current    Voltage \n(i)    (v) \n'
+    out = 'Current    Voltage \n(i)        (v) \n'
     while (i < imax):
         out += '{0:.3f}'.format(i)
         vs = []
@@ -185,7 +185,7 @@ def allHyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
             vs.append(v)
             sumv += v
             vtot += 1
-        out += '  {0:+.8f}'.format(sumv/vtot)
+        out += '      {0:+.8f}'.format(sumv/vtot)
         for v_ in vs:
             out += '  {0:+.8f}'.format(v_)
         out += '\n'
@@ -203,7 +203,7 @@ def allHyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
             vs.append(v)
             sumv += v
             vtot += 1
-        out += '  {0:+.8f}'.format(sumv/vtot)
+        out += '      {0:+.8f}'.format(sumv/vtot)
         for v_ in vs:
             out += '  {0:+.8f}'.format(v_)
         out += '\n'

@@ -1,5 +1,5 @@
 import math
-import JJs
+from jjsim import JJs
 import FileSetup as FS
 import time, datetime
 
@@ -11,7 +11,6 @@ def phasePorts(js, i=.01, T=1000, mod = 100000, fl='test.dat'):
         dt: timestep
         T: duration of junction averaging
         fl: data file to write """ 
-    
     start_time = time.time()
     nw = datetime.datetime.now()
     fl = FS.fileSetup(fl)
@@ -26,14 +25,14 @@ def phasePorts(js, i=.01, T=1000, mod = 100000, fl='test.dat'):
     f.write('Date:               {0}/{1}/{2} \n'.format(nw.month, nw.day, nw.year))
     f.write('Time:               {0}:{1} \n'.format(nw.hour, nw.minute))
 
-    out = 'Time    Phase    Voltage \n(t)    (p)    (v) \n'
+    out = 'Time   Phase       Voltage \n(t)    (p)         (v) \n'
     print('starting')
     for j in js:
         t = 0
         while t*j.dt<T:
             pv = j.getPhaseVolt(i)
             if t%mod == 0:
-                out += '{0:.3f}    {1:.8f}    {2:.8f} \n'.format(t*j.dt, pv[0], pv[1])
+                out += '{0:.3f}  {1:.8f}  {2:.8f} \n'.format(t*j.dt, pv[0], pv[1])
             if pv[0] > 50:
                 break
             t+=1
@@ -51,7 +50,7 @@ def phasePort(j, i=.01, T=1000, mod = 100000, fl='test.dat'):
         dt: timestep
         T: duration of junction averaging
         fl: data file to write """ 
-        start_time = time.time()
+    start_time = time.time()
     nw = datetime.datetime.now()
     fl = FS.fileSetup(fl)
     f = open(fl, 'w')

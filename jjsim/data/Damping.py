@@ -1,5 +1,5 @@
 import math
-import JJs
+from jjsim import JJs
 import FileSetup as FS
 import time, datetime
 
@@ -17,7 +17,7 @@ def dampingPlot(j, w0, wmax, estep):
     f.write('Time:                 {0}:{1} \n'.format(nw.hour, nw.minute))
 
     w = w0
-    out = 'Frequency    Damping \n(w)    (b) \n'
+    out = 'Frequency    Damping \n(w)          (b) \n'
     while (w < wmax):
         out += '{0:.3e}'.format(w)
         b = b0((1 + math.sqrt(b0/b1)*b0*p**-2*(w/wp)**2)/(1 + b0**2/b1*p**-2*(w/wp)**2))**2
