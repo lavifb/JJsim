@@ -123,7 +123,7 @@ class JJn(JJ):
 
 class JJFreq(JJ):
     """ A Josephson Junction with frequency dependent circuit elements."""
-    def __init__(self, b_c = 1.0, p = 0.0, v = 0.0, dt = .01, vc = 0.0, Q1 = 1.0, rho = 1.0):
+    def __init__(self, b_c = 1.0, p = 0.0, v = 0.0, vc = 0.0, Q1 = 1.0, rho = 1.0, dt = .01):
         """ Initiates the junction.
 
             b_c : Stewart-McCumber damping constant
@@ -202,7 +202,7 @@ class JJFreq(JJ):
 
 class JJnFreq(JJFreq, JJn):
     """ A noisy Josephson Junction with frequency dependent circuit elements."""
-    def __init__(self, b_c = 1.0, p = 0.0, v = 0.0, dt = .01, vc = 0.0, Q1 = 1.0, rho = 1.0, temp = 0.0):
+    def __init__(self, b_c = 1.0, p = 0.0, v = 0.0, vc = 0.0, Q1 = 1.0, rho = 1.0, dt = .01, temp = 0.0):
         """ Initiates the junction.
 
             b_c : Stewart-McCumber damping constant
@@ -214,12 +214,12 @@ class JJnFreq(JJFreq, JJn):
             rho: quotient of the different junction time constants
             temp: unit-less temperature """
 
-        JJFreq.__init__(self, b_c, p, v, dt, vc, Q1, rho)
-        self.setTemp(temp, dt)
+        JJFreq.__init__(self, b_c, p, v, vc, Q1, rho, dt)
+        self.setTemp(temp)
 
     def getInfo(self, dt = .01):
         """ Returns info about junction."""
-        out = 'b = {0}, temp = {1}, Q_1 = {1}, rho = {2}'.format(self.b, self.getTemp(dt), self.getQ1(), self.getRho())
+        out = 'b = {0}, temp = {1}, Q_1 = {1}, rho = {2}'.format(self.b, self.getTemp(), self.getQ1(), self.getRho())
         return out
 
     def getType(self):
