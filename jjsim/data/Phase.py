@@ -3,7 +3,7 @@ from jjsim import JJs
 import FileSetup as FS
 import time, datetime
 
-def phasePorts(js, i=.01, T=1000, mod = 100000, fl='test.dat'):
+def phasePorts(js, i = 0.0, T = 1000, mod = 100000, fl='test.dat'):
     """ Returns the phase portraits for the junctions.
 
         js: array of junctions
@@ -42,7 +42,7 @@ def phasePorts(js, i=.01, T=1000, mod = 100000, fl='test.dat'):
     f.close()
     print('done {0}'.format(fl))
 
-def phasePort(j, i=.01, T=1000, mod = 100000, fl='test.dat'):
+def phasePort(j, i = 0.0, T = 1000, mod = 100000, fl='test.dat'):
     """ Returns the phase portraits for a junction.
 
         j: junctions

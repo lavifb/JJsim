@@ -65,3 +65,44 @@ def euler(x0, f, dt, t = 0):
         xf[i] = x0[i] + dt*dx[i]
     return xf
     
+def dot(v1, v2):
+    'dot product of two vectors.'
+    sum = 0
+    for i in xrange(len(v1)):
+        sum += v1[i] * v2[i]
+    return sum
+
+def matmult(m, v):
+    'multiply matrix by a vector.'
+    return [dot(r, v) for r in m]
+
+def gauss_jordan(m, eps = 1.0/(10**10)):
+    """Puts given matrix (2D array) into the Reduced Row Echelon Form.
+        Returns True if successful, False if 'm' is singular."""
+    (h, w) = (len(m), len(m[0]))
+    for y in range(0,h):
+        maxrow = y
+        for y2 in range(y+1, h):    # Find max pivot
+            if abs(m[y2][y]) > abs(m[maxrow][y]):
+              maxrow = y2
+        (m[y], m[maxrow]) = (m[maxrow], m[y])
+        if abs(m[y][y]) <= eps:     # Singular?
+            return False
+        for y2 in range(y+1, h):    # Eliminate column y
+            c = m[y2][y] / m[y][y]
+            for x in range(y, w):
+                m[y2][x] -= m[y][x] * c
+    for y in range(h-1, 0-1, -1): # Backsubstitute
+        c  = m[y][y]
+        for y2 in range(0,y):
+            for x in range(w-1, y-1, -1):
+                m[y2][x] -=  m[y][x] * m[y2][y] / c
+        m[y][y] /= c
+        for x in range(h, w):       # Normalize row y
+            m[y][x] /= c
+    return True
+
+def matInv(M):
+    """ Returns the inverse of the matrix M."""
+    m2 = [row[:]+[int(i==j) for j in range(len(M) )] for i,row in enumerate(M) ]
+    return [row[len(M[0]):] for row in m2] if gauss_jordan(m2) else None

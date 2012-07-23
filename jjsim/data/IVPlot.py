@@ -19,7 +19,7 @@ def IVPlot(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f = open(fl, 'w')
     # write heading
     f.write('IV Plot \n')
-    f.write('No. of Junction:    {0} \n'.format(len(js)))
+    f.write('No. of Junctions:    {0} \n'.format(len(js)))
     f.write('Type of Junctions:  {0} \n'.format(js[0].getType()))
     f.write('Junctions Info:     {0} \n'.format(js[0].getInfo()))
     f.write('dt, T:              {0}, {1} \n'.format(js[0].dt, T))
@@ -30,14 +30,14 @@ def IVPlot(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     i = i0
     out = 'Current    Voltage \n(i)        (v) \n'
     while (i < imax):
-        out += '{0:.3f}'.format(i)
+        out = ''.join([out, '{0:.5f}'.format(i)])
         sumv = 0.0
         vtot = 0
         for j in js:
             v = j.applyI(i, T)
             sumv += v
             vtot += 1
-        out += '      {0:+.8f} \n'.format(sumv/vtot)
+        out = ''.join([out, '    {0:+.8f} \n'.format(sumv/vtot)])
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i += di
     f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
@@ -61,7 +61,7 @@ def hyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f = open(fl, 'w')
     # write heading
     f.write('Hysteric IV Plot \n')
-    f.write('No. of Junction:    {0} \n'.format(len(js)))
+    f.write('No. of Junctions:    {0} \n'.format(len(js)))
     f.write('Type of Junctions:  {0} \n'.format(js[0].getType()))
     f.write('Junctions Info:     {0} \n'.format(js[0].getInfo()))
     f.write('dt, T:              {0}, {1} \n'.format(js[0].dt, T))
@@ -72,27 +72,27 @@ def hyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     i = i0
     out = 'Current    Voltage \n(i)        (v) \n'
     while (i < imax):
-        out += '{0:.3f}'.format(i)
+        out = ''.join([out, '{0:.5f}'.format(i)])
         sumv = 0.0
         vtot = 0
         for j in js:
             v = j.applyI(i, T)
             sumv += v
             vtot += 1
-        out += '      {0:+.8f} \n'.format(sumv/vtot)
+        out = ''.join([out, '    {0:+.8f} \n'.format(sumv/vtot)])
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i += di
     i = imax
     print('Lowering current')
     while (i > i0):
-        out += '{0:.3f}'.format(i)
+        out = ''.join([out, '{0:.5f}'.format(i)])
         sumv = 0.0
         vtot = 0
         for j in js:
             v = j.applyI(i, T)
             sumv += v
             vtot += 1
-        out += '      {0:+.8f} \n'.format(sumv/vtot)
+        out = ''.join([out, '    {0:+.8f} \n'.format(sumv/vtot)])
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i -= di
     f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
@@ -117,7 +117,7 @@ def allIVPlot(js, T = 1000, di = .01, i0 = 0.0, imax=1.5, fl='test.dat'):
     f = open(fl, 'w')
     # write heading
     f.write('IV Plot with individual junctions\n')
-    f.write('No. of Junction:    {0} \n'.format(len(js)))
+    f.write('No. of Junctions:    {0} \n'.format(len(js)))
     f.write('Type of Junctions:  {0} \n'.format(js[0].getType()))
     f.write('Junctions Info:     {0} \n'.format(js[0].getInfo()))
     f.write('dt, T:              {0}, {1} \n'.format(js[0].dt, T))
@@ -128,7 +128,7 @@ def allIVPlot(js, T = 1000, di = .01, i0 = 0.0, imax=1.5, fl='test.dat'):
     i = i0
     out = 'Current    Voltage \n(i)        (v) \n'
     while (i < imax):
-        out += '{0:.3f}'.format(i)
+        out = ''.join([out, '{0:.5f}'.format(i)])
         vs = []
         sumv = 0.0
         vtot = 0
@@ -137,10 +137,10 @@ def allIVPlot(js, T = 1000, di = .01, i0 = 0.0, imax=1.5, fl='test.dat'):
             vs.append(v)
             sumv += v
             vtot += 1
-        out += '      {0:+.8f}'.format(sumv/vtot)
+        out = ''.join([out, '    {0:+.8f} \n'.format(sumv/vtot)])
         for v_ in vs:
-            out += '  {0:+.8f}'.format(v_)
-        out += '\n'
+            out = ''.join([out, '    {0:+.8f}'.format(v_)])
+        out = ''.join([out, '\n'])
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i += di
     f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
@@ -165,7 +165,7 @@ def allHyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     f = open(fl, 'w')
     # write heading
     f.write('Hysteric IV Plot with individual junctions\n')
-    f.write('No. of Junction:    {0} \n'.format(len(js)))
+    f.write('No. of Junctions:    {0} \n'.format(len(js)))
     f.write('Type of Junctions:  {0} \n'.format(js[0].getType()))
     f.write('Junctions Info:     {0} \n'.format(js[0].getInfo()))
     f.write('dt, T:              {0}, {1} \n'.format(js[0].dt, T))
@@ -176,7 +176,7 @@ def allHyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
     i = i0
     out = 'Current    Voltage \n(i)        (v) \n'
     while (i < imax):
-        out += '{0:.3f}'.format(i)
+        out = ''.join([out, '{0:.5f}'.format(i)])
         vs = []
         sumv = 0.0
         vtot = 0
@@ -185,16 +185,16 @@ def allHyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
             vs.append(v)
             sumv += v
             vtot += 1
-        out += '      {0:+.8f}'.format(sumv/vtot)
+        out = ''.join([out, '    {0:+.8f} \n'.format(sumv/vtot)])
         for v_ in vs:
-            out += '  {0:+.8f}'.format(v_)
-        out += '\n'
+            out = ''.join([out, '    {0:+.8f}'.format(v_)])
+        out = ''.join([out, '\n'])
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i += di
     i = imax
     print('Lowering current')
     while (i > i0):
-        out += '{0:.3f}'.format(i)
+        out = ''.join([out, '{0:.5f}'.format(i)])
         vs = []
         sumv = 0.0
         vtot = 0
@@ -203,10 +203,10 @@ def allHyst(js, T, di = .01, i0 = 0, imax=1.5, fl='test.dat'):
             vs.append(v)
             sumv += v
             vtot += 1
-        out += '      {0:+.8f}'.format(sumv/vtot)
+        out = ''.join([out, '    {0:+.8f} \n'.format(sumv/vtot)])
         for v_ in vs:
-            out += '  {0:+.8f}'.format(v_)
-        out += '\n'
+            out = ''.join([out, '    {0:+.8f}'.format(v_)])
+        out = ''.join([out, '\n'])
         print('{0} run for {1} seconds'.format(i, time.time() - start_time))
         i -= di
     f.write('Runtime:            {0} \n\n'.format(time.time() - start_time))
